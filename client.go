@@ -189,7 +189,7 @@ func (c *APIClient) prepareRequest(
 	fileBytes []byte,
 ) (localVarRequest *http.Request, err error) {
 	var body *bytes.Buffer
-	fmt.Println("This should appear")
+	fmt.Println("This should appear", postBody)
 	// Detect postBody type and post.
 	if postBody != nil {
 		contentType := headerParams["Content-Type"]
