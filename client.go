@@ -205,6 +205,7 @@ func (c *APIClient) prepareRequest(
 		dd, _ := ioutil.ReadAll(body)
 		fmt.Println(contentType, string(dd))
 	}
+	fmt.Println("here 1")
 	// add form parameters and file if available.
 	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(fileBytes) > 0 && fileName != "") {
 		if body != nil {
@@ -225,6 +226,7 @@ func (c *APIClient) prepareRequest(
 				}
 			}
 		}
+		fmt.Println("here 2")
 		if len(fileBytes) > 0 && fileName != "" {
 			w.Boundary()
 			//_, fileNm := filepath.Split(fileName)
@@ -255,6 +257,7 @@ func (c *APIClient) prepareRequest(
 		headerParams["Content-Length"] = fmt.Sprintf("%d", body.Len())
 	}
 
+	fmt.Println("here 3")
 	// Setup path and query parameters
 	url, err := url.Parse(path)
 	if err != nil {
@@ -282,6 +285,7 @@ func (c *APIClient) prepareRequest(
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("here 4")
 
 	// add header parameters, if any
 	if len(headerParams) > 0 {
@@ -298,6 +302,7 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Host = c.cfg.Host
 	}
 
+	fmt.Println("here 5")
 	// Add the user agent to the request.
 	localVarRequest.Header.Add("User-Agent", c.cfg.UserAgent)
 
@@ -333,6 +338,7 @@ func (c *APIClient) prepareRequest(
 		localVarRequest.Header.Add(header, value)
 	}
 
+	fmt.Println("here 6")
 	return localVarRequest, nil
 }
 
