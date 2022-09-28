@@ -836,6 +836,7 @@ func (a *ActivitiesApiService) UpdateActivityById(ctx context.Context, id int64,
 	fmt.Println("localVarPostBody", localVarPostBody)
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
+		fmt.Println("were errored early", err)
 		return localVarReturnValue, nil, err
 	}
 
