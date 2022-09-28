@@ -16,6 +16,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -185,8 +186,8 @@ func (c *APIClient) prepareRequest(
 	queryParams url.Values,
 	formParams url.Values,
 	fileName string,
-	fileBytes []byte) (localVarRequest *http.Request, err error) {
-
+	fileBytes []byte,
+) (localVarRequest *http.Request, err error) {
 	var body *bytes.Buffer
 
 	// Detect postBody type and post.
@@ -201,8 +202,9 @@ func (c *APIClient) prepareRequest(
 		if err != nil {
 			return nil, err
 		}
+		dd, _ := ioutil.ReadAll(body)
+		fmt.Println(contentType, string(dd))
 	}
-
 	// add form parameters and file if available.
 	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(fileBytes) > 0 && fileName != "") {
 		if body != nil {
@@ -272,6 +274,7 @@ func (c *APIClient) prepareRequest(
 
 	// Generate a new request
 	if body != nil {
+		fmt.Println("still using it")
 		localVarRequest, err = http.NewRequest(method, url.String(), body)
 	} else {
 		localVarRequest, err = http.NewRequest(method, url.String(), nil)
@@ -287,6 +290,7 @@ func (c *APIClient) prepareRequest(
 			headers.Set(h, v)
 		}
 		localVarRequest.Header = headers
+		fmt.Println(headers)
 	}
 
 	// Override request host, if applicable
@@ -333,17 +337,17 @@ func (c *APIClient) prepareRequest(
 }
 
 func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err error) {
-		if strings.Contains(contentType, "application/xml") {
-			if err = xml.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
-		} else if strings.Contains(contentType, "application/json") {
-			if err = json.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
+	if strings.Contains(contentType, "application/xml") {
+		if err = xml.Unmarshal(b, v); err != nil {
+			return err
 		}
+		return nil
+	} else if strings.Contains(contentType, "application/json") {
+		if err = json.Unmarshal(b, v); err != nil {
+			return err
+		}
+		return nil
+	}
 	return errors.New("undefined response type")
 }
 
