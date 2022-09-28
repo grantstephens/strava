@@ -850,7 +850,7 @@ func (a *ActivitiesApiService) UpdateActivityById(ctx context.Context, id int64,
 	if err != nil {
 		return localVarReturnValue, localVarHttpResponse, err
 	}
-
+	fmt.Println("Reponse code", localVarHttpResponse.StatusCode)
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
 		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
